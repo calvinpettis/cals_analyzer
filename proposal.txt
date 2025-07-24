@@ -1,0 +1,5 @@
+For my project, I am going to analyze FizzBuzz Enterprise Edition. This is a repo with 100% Java, which makes it suitable for analysis. I am going to check for unused imports and maybe duplicate code if I can figure it out. I will run this analysis tool and keep track of method blocks, if there are repeats warn the user. For unused imports, if methods are imported and then not found in the following code, I will warn the user. 
+
+check if pointers point to same memory location
+
+Use hashmap to keep track of defs and kills (variable assignments)

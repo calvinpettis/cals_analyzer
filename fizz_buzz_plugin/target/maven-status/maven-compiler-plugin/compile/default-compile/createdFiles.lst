@@ -1,0 +1,2 @@
+META-INF/services/com.google.errorprone.bugpatterns.BugChecker
+edu/appstate/cs/checker/FizzBuzzChecker.class
