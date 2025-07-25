@@ -1,0 +1,12 @@
+Features added so far:
+
+1. Basic checks for too long/short class, method, and variable names.
+2. Checks for dead code (if (false), while(true) etc)
+3. Codestyle checks on variable names (camelCase, etc)
+4. 
+5. Null checks on variables
+6. 
+
+Issues: Finding a way to check for unused imports
+
+

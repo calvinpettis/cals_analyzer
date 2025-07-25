@@ -20,6 +20,7 @@ public class FizzBuzzChecker extends BugChecker implements
     BugChecker.ClassTreeMatcher,
     BugChecker.MethodTreeMatcher,
     BugChecker.ImportTreeMatcher,
+    BugChecker.WhileLoopTreeMatcher,
     BugChecker.IfTreeMatcher {
 
   @Override
@@ -64,6 +65,23 @@ public class FizzBuzzChecker extends BugChecker implements
 
   @Override
   public Description matchIf(IfTree tree, VisitorState state) {
+    if (tree.getCondition().equals("false") && tree.getElseStatement() != null) {
+      return buildDescription(tree)
+          .setMessage(String.format("dead code: %s", tree.getClass()))
+          .build();
+    }
+
+    return Description.NO_MATCH;
+  }
+
+  @Override
+  public Description matchWhileLoop(WhileLoopTree tree, VisitorState state) {
+    if (tree.getStatement().toString() == "true") {
+
+      return buildDescription(tree)
+          .setMessage(String.format("did you mean to have an infinite loop?: %s", tree.getClass()))
+          .build();
+    }
     return Description.NO_MATCH;
   }
 
