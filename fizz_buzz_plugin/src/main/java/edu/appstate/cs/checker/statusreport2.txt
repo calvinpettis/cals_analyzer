@@ -1,0 +1,9 @@
+Features added:
+
+Checking for no error catching
+checking for static imports
+infinite loop checks
+
+issues:
+Getting anything useful besides string matching (Getting names, values assigned, etc)
+finding useful checks that arent caught by editors or compilers

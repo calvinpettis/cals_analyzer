@@ -17,10 +17,12 @@ import static com.google.errorprone.BugPattern.SeverityLevel.WARNING;
 
 public class FizzBuzzChecker extends BugChecker implements
     BugChecker.VariableTreeMatcher,
+    BugChecker.AssignmentTreeMatcher,
     BugChecker.ClassTreeMatcher,
     BugChecker.MethodTreeMatcher,
     BugChecker.ImportTreeMatcher,
     BugChecker.WhileLoopTreeMatcher,
+    BugChecker.TryTreeMatcher,
     BugChecker.IfTreeMatcher {
 
   @Override
@@ -44,6 +46,21 @@ public class FizzBuzzChecker extends BugChecker implements
   }
 
   @Override
+  public Description matchAssignment(AssignmentTree tree, VisitorState state) {
+    return Description.NO_MATCH;
+  }
+
+  @Override
+  public Description matchTry(TryTree tree, VisitorState state) {
+    if (tree == null) {
+      return buildDescription(tree)
+          .setMessage(String.format("You do not check for any exceptions."))
+          .build();
+    }
+    return Description.NO_MATCH;
+  }
+
+  @Override
   public Description matchClass(ClassTree tree, VisitorState state) {
     if (tree.getSimpleName().length() > 25) {
       return buildDescription(tree)
@@ -55,11 +72,21 @@ public class FizzBuzzChecker extends BugChecker implements
 
   @Override
   public Description matchMethod(MethodTree tree, VisitorState state) {
+    if (tree.getReturnType() == null) {
+      return buildDescription(tree)
+          .setMessage(String.format("Possible null return error here: %s", tree.getName()))
+          .build();
+    }
     return Description.NO_MATCH;
   }
 
   @Override
   public Description matchImport(ImportTree tree, VisitorState state) {
+    if (tree.isStatic()) {
+      return buildDescription(tree)
+          .setMessage(String.format("Did you mean to statically import?"))
+          .build();
+    }
     return Description.NO_MATCH;
   }
 
@@ -70,19 +97,16 @@ public class FizzBuzzChecker extends BugChecker implements
           .setMessage(String.format("dead code: %s", tree.getClass()))
           .build();
     }
-
     return Description.NO_MATCH;
   }
 
   @Override
   public Description matchWhileLoop(WhileLoopTree tree, VisitorState state) {
     if (tree.getStatement().toString() == "true") {
-
       return buildDescription(tree)
           .setMessage(String.format("did you mean to have an infinite loop?: %s", tree.getClass()))
           .build();
     }
     return Description.NO_MATCH;
   }
-
 }
